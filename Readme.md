@@ -3,14 +3,18 @@
 A webpage that scrapes data from [https://planzajec.uek.krakow.pl/](https://planzajec.uek.krakow.pl/) and allows you to see schedule for any group or download **.ICS** calendar 
 
 # How to use
-1. Run the scraper once to prepare the group list:
-    * ```python get_all_groups.py```
-2. Start the Flask app:
-    * ```python app.py```
-3. Open the webpage, enter your user ID, password, and group name.
-4. Use one of the two buttons:
-    * ```Create .ICS``` generates the calendar file and downloads it.
-    * ```Show Calendar``` renders a preview table on the page.
+1. Set up virtual environment
+   * `sorce .venv/Scripts/activate`
+2. Install libraries
+   * `pip install -r requirements.txt`
+3. Run the scraper once to prepare the group list:
+    * `python get_all_groups.py`
+4. Start the Flask app:
+    * `python app.py`
+5. Open the webpage, enter your user ID, password, and group name.
+6. Use one of the two buttons:
+    * `Create .ICS` generates the calendar file and downloads it.
+    * `Show Calendar` renders a preview table on the page.
 
 # How it works
 ## 1. config_new.yaml
