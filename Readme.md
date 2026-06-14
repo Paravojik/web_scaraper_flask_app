@@ -40,6 +40,7 @@ It returns 3 values:
     * Unauthorized: Invalid username or password.
     * No classes found for the specified group. Please check the group name and try again.
     * Unexpected schedule format: missing 'Dzień, godzina' column.
+
 The schedule includes only those clases which typ is `["ćwiczenia", "wykład", "egzamin","laboratorium do wyboru", "laboratorium", "seminarium","konwersatorium do wyboru","konwersatorium"]`
 # 4. app.py
 ## Needed for start of the webpage
