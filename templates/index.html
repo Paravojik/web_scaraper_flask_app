@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/icon.png" type="image/x-icon">
+    <title>UEK Schedule Scraper</title>
+    <style>
+        :root {
+            --primary-color: #047814;
+            --primary-hover: #035c0f;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --error-color: #ef4444;
+            --error-bg: #fef2f2;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+           background-color: rgba(190, 190, 246, 0.234);
+            color: var(--text-main);
+            display: flex; 
+            flex-direction: column;
+           
+            justify-content: center;
+            padding: 24px 16px;
+            box-sizing: border-box;
+            min-height: 100vh; 
+            margin: 0; 
+
+        }
+        /* .conatiner_wraper{
+            width: 100%;
+            display: flex;
+            align-items: center;
+        } */
+        .container { 
+            background: rgba(255, 255, 255, 0.92);
+            padding: 40px; 
+            border-radius: 18px; 
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 45px -18px rgba(15, 23, 42, 0.24), 0 8px 20px -12px rgba(15, 23, 42, 0.14);
+            backdrop-filter: blur(10px);
+            text-align: center; 
+            width: 100%;
+            max-width: 480px;
+            box-sizing: border-box;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
+        }
+
+        .error { 
+            background-color: var(--error-bg);
+            color: var(--error-color); 
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px; 
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .error p { margin: 0; }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            display: flex;
+            position: relative;
+            align-items: center;
+        }
+
+        input { 
+            width: 100%;
+            padding: 12px 14px; 
+            font-size: 15px;
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(4, 120, 20, 0.15);
+        }
+
+        /* Adjust input padding if it has a trailing button */
+        .input-wrapper input {
+            padding-right: 65px;
+        }
+
+        .btn_show {
+            position: absolute;
+            right: 8px;
+            background: none;
+            color: var(--text-muted);
+            border: none;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn_show:hover {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .btn_primary { 
+            margin-top: 10px;
+            padding: 13px 20px; 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer; 
+            transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease; 
+            box-shadow: 0 10px 18px -12px rgba(4, 120, 20, 0.65);
+        }
+
+        .btn_primary:hover { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-1px);
+        }
+        .btn_show_calendar{
+            background-color: rgb(5, 34, 113);
+            margin-left: 0;
+        }
+        .btn_show_calendar:hover{
+            background-color: rgb(8, 43, 141);
+        }
+        .button_wraper{
+           display: flex;
+              justify-content: space-between;
+              gap: 12px;
+        }
+        .notice {
+            margin: 18px 0;
+            padding: 14px 16px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: left;
+        }
+        .notice_success {
+            background-color: #ecfdf5;
+            color: #047814;
+            border-color: rgba(4, 120, 20, 0.2);
+        }
+        .notice_info {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border-color: rgba(29, 78, 216, 0.18);
+        }
+        .preview_card {
+            margin: 18px 0 0;
+            text-align: left;
+        }
+        .preview_card h3 {
+            margin: 0 0 12px;
+            font-size: 18px;
+            letter-spacing: -0.01em;
+        }
+        .preview_table_wrap {
+            max-height: 520px;
+
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        }
+        .preview_table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .preview_table th {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 11px 12px;
+            text-align: left;
+            white-space: nowrap;
+            z-index: 1;
+            color: #334155;
+        }
+        .preview_table td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 11px 12px;
+            vertical-align: top;
+        }
+        .preview_table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+        .download-link {
+            color: inherit;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .download-link:hover {
+            opacity: 0.85;
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 24px 18px;
+                border-radius: 16px;
+                max-width: 100%;
+            }
+
+            .button_wraper {
+                flex-direction: column;
+            }
+
+            .btn_show_calendar {
+                margin-top: 0;
+            }
+
+            .preview_card h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container_wraper">
+ <div class="container">
+        <h2>Download Schedule</h2>
+        <div class="subtitle">Enter your details to generate your academic calendar</div>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="error">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+             
+        <form method="POST">
+            <div class="field-group">
+                <label for="user_id">User ID</label>
+                    <input value="{{ userData.username }}" type="text" id="user_id" name="user_id" autocomplete="username" placeholder="Enter User ID" required>
+            </div>
+
+            <div class="field-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input value="{{ userData.password }}" type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter Password" required>
+                    <button class="btn_show" type="button" id="togglePassword">Show</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="group_name">Group Name</label>
+                    <input value="{{ userData.group_name }}" type="text" id="group_name" name="group_name" list="groupList" placeholder="Select or enter group" required>
+                <datalist id="groupList">
+                    {% for group in groups.keys() %}
+                        <option value="{{ groups[group].name }}">{{ groups[group].id }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+
+            <div class="button_wraper">
+                <button class="btn_primary" type="submit" name="action" value="download" >
+                    Create .ICS
+                </button>
+                <button class="btn_primary btn_show_calendar" type="submit" name="action" value="preview" >
+                    Show Calendar
+                </button>
+            </div>
+        </form>
+        
+    </div>
+    </div>
+   
+       {% if download_url %}
+                    <iframe src="{{ download_url }}" style="display:none;"></iframe>
+                    <div class="notice notice_success">
+                        <p>Your file is downloading in the background.</p>
+                        <p><a class="download-link" href="{{ download_url }}">Download again</a></p>
+                    </div>
+                {% endif %}
+
+                {% if preview_rows %}
+                    <div class="preview_card">
+                        <h3>Calendar Preview</h3>
+                        <div class="preview_table_wrap">
+                            <table class="preview_table">
+                                <thead>
+                                    <tr>
+                                        {% for column in preview_columns %}
+                                            <th>{{ column }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in preview_rows %}
+                                        <tr>
+                                            {% for column in preview_columns %}
+                                                    <td>{{ row[column] ~ 'h' if column == 'Duration' else row[column] }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+    </script>
+</body>
+</html>
