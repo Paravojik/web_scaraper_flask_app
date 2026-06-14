@@ -4,15 +4,16 @@ A webpage that scrapes data from [https://planzajec.uek.krakow.pl/](https://plan
 
 # How to use
 1. Set up virtual environment
+   * `py -m venv .venv`
    * `sorce .venv/Scripts/activate`
-2. Install libraries
+3. Install libraries
    * `pip install -r requirements.txt`
-3. Run the scraper once to prepare the group list:
-    * `python get_all_groups.py`
-4. Start the Flask app:
-    * `python app.py`
-5. Open the webpage, enter your user ID, password, and group name.
-6. Use one of the two buttons:
+4. Run the scraper once to prepare the group list:
+    * `py get_all_groups.py`
+5. Start the Flask app:
+    * `py app.py`
+6. Open the webpage, enter your user ID, password, and group name.
+7. Use one of the two buttons:
     * `Create .ICS` generates the calendar file and downloads it.
     * `Show Calendar` renders a preview table on the page.
 
@@ -20,7 +21,7 @@ A webpage that scrapes data from [https://planzajec.uek.krakow.pl/](https://plan
 ## 1. config_new.yaml
 Template for creation of ```config.yaml```. It is needed for ```get_all_groups.py```
 ## 2. get_all_groups.py
-* One-time usage to get all possible groups(teachers, courses, rooms)
+* One-time usage to get all possible groups(teachers, courses, rooms). **It can take up to 2 minutes.**
 * saves everything to ```/groups/all_groups.json```
 * in the file you can find dictionary which got this values:
     * ```name``` - that is a field that user will use, 
