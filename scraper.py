@@ -71,7 +71,8 @@ def generate_schedule(group_name,username,password):
 
     if not os.path.exists("schedules_ICS"):
         os.mkdir("schedules_ICS")
-
+    if not os.path.exists("schedules"):
+        os.mkdir("schedules")
     ics_calendar = Calendar()
     timezone = ZoneInfo("Europe/Warsaw")
 
